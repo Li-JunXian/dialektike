@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "descriptor_version": 1,
+  "runtime_id": "codex",
+  "vendor_id": "openai",
+  "agent_system_id": "codex",
+  "relay_provider_id": "codex",
+  "display": {
+    "name": "Codex",
+    "short_name": "Codex",
+    "mark": "X",
+    "icon_token": "terminal",
+    "accent_token": "blue"
+  },
+  "authentication": {
+    "label": "ChatGPT subscription route",
+    "authority": "adapter-authenticated-discovery",
+    "not_observable_label": "Authentication route not observable"
+  },
+  "version_evidence": {
+    "label": "Codex app server",
+    "authority": "adapter-runtime-probe",
+    "not_observable_label": "Runtime version not observable"
+  },
+  "default_selection": {
+    "model": null,
+    "effort": null,
+    "service_tier": null,
+    "execution_profile": "inherit-native"
+  },
+  "control_schema": [],
+  "supported_content_types": [
+    "markdown"
+  ],
+  "execution_profiles": [
+    {
+      "profile_id": "inherit-native",
+      "label": "Inherit native settings",
+      "description": "Use the authenticated Codex catalog and governed native approval flow.",
+      "availability": {
+        "available": true,
+        "reason": null
+      },
+      "values": {}
+    }
+  ],
+  "runtime_facilities": [
+    {
+      "facility_id": "permissions",
+      "label": "Permissions",
+      "description": "Native approval requests remain subject to Dialektike's governed relay.",
+      "observability": "observable",
+      "management": "dialektike"
+    },
+    {
+      "facility_id": "mcp-servers",
+      "label": "MCP servers",
+      "description": "Managed by the installed Codex runtime and not claimed as effective by Dialektike.",
+      "observability": "not-observable",
+      "management": "runtime-native"
+    }
+  ],
+  "permission_presentations": [
+    {
+      "request_kind": "item/commandExecution/requestApproval",
+      "title": "Command approval",
+      "layout": "command",
+      "fields": [
+        {
+          "field_id": "command",
+          "label": "Command",
+          "pointer": "/command",
+          "format": "code"
+        },
+        {
+          "field_id": "cwd",
+          "label": "Working directory",
+          "pointer": "/cwd",
+          "format": "path"
+        }
+      ]
+    },
+    {
+      "request_kind": "item/fileChange/requestApproval",
+      "title": "File change approval",
+      "layout": "file-change",
+      "fields": [
+        {
+          "field_id": "reason",
+          "label": "Reason",
+          "pointer": "/reason",
+          "format": "text"
+        },
+        {
+          "field_id": "grant-root",
+          "label": "Requested write root",
+          "pointer": "/grantRoot",
+          "format": "path"
+        }
+      ]
+    },
+    {
+      "request_kind": "item/permissions/requestApproval",
+      "title": "Additional permissions",
+      "layout": "tool",
+      "fields": [
+        {
+          "field_id": "reason",
+          "label": "Reason",
+          "pointer": "/reason",
+          "format": "text"
+        },
+        {
+          "field_id": "cwd",
+          "label": "Working directory",
+          "pointer": "/cwd",
+          "format": "path"
+        },
+        {
+          "field_id": "permissions",
+          "label": "Requested permissions",
+          "pointer": "/permissions",
+          "format": "json"
+        }
+      ]
+    },
+    {
+      "request_kind": "execCommandApproval",
+      "title": "Command approval",
+      "layout": "command",
+      "fields": [
+        {
+          "field_id": "command",
+          "label": "Command",
+          "pointer": "/command",
+          "format": "code"
+        },
+        {
+          "field_id": "cwd",
+          "label": "Working directory",
+          "pointer": "/cwd",
+          "format": "path"
+        },
+        {
+          "field_id": "reason",
+          "label": "Reason",
+          "pointer": "/reason",
+          "format": "text"
+        }
+      ]
+    },
+    {
+      "request_kind": "applyPatchApproval",
+      "title": "File change approval",
+      "layout": "file-change",
+      "fields": [
+        {
+          "field_id": "file-changes",
+          "label": "File changes",
+          "pointer": "/fileChanges",
+          "format": "json"
+        },
+        {
+          "field_id": "grant-root",
+          "label": "Requested write root",
+          "pointer": "/grantRoot",
+          "format": "path"
+        },
+        {
+          "field_id": "reason",
+          "label": "Reason",
+          "pointer": "/reason",
+          "format": "text"
+        }
+      ]
+    }
+  ],
+  "connect": {
+    "label": "Connect Codex",
+    "help_text": "Install and authenticate the approved Codex runtime, then refresh capabilities.",
+    "action": "refresh-capabilities"
+  }
+}

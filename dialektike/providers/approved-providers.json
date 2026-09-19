@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "providers": [
+    {
+      "runtime_id": "claude-code",
+      "descriptor": "descriptors/claude-code.json",
+      "descriptor_sha256": "a6a60a55f7eb06594894d001b8afb5d21681e2230664621d9f106a1bc77fc282",
+      "approval_reference": "docs/governance/0005-m2-desktop-scope-and-roles.md (Live, 2026-07-24)",
+      "frozen_modules": [
+        "dialektike.adapters.claude"
+      ]
+    },
+    {
+      "runtime_id": "codex",
+      "descriptor": "descriptors/codex.json",
+      "descriptor_sha256": "1068437a4b9cadb92190075bbf8a0f90270a28c36da3d054a69de6ee694f2de8",
+      "approval_reference": "docs/governance/0005-m2-desktop-scope-and-roles.md (Live, 2026-07-24)",
+      "frozen_modules": [
+        "dialektike.adapters.codex"
+      ]
+    }
+  ]
+}

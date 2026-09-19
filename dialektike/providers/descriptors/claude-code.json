@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "descriptor_version": 2,
+  "runtime_id": "claude-code",
+  "vendor_id": "anthropic",
+  "agent_system_id": "claude-code",
+  "relay_provider_id": "claude",
+  "display": {
+    "name": "Claude Code",
+    "short_name": "Claude",
+    "mark": "C",
+    "icon_token": "terminal",
+    "accent_token": "amber"
+  },
+  "authentication": {
+    "label": "Claude subscription route",
+    "authority": "adapter-authenticated-discovery",
+    "not_observable_label": "Authentication route not observable"
+  },
+  "version_evidence": {
+    "label": "Claude Code runtime",
+    "authority": "adapter-runtime-probe",
+    "not_observable_label": "Runtime version not observable"
+  },
+  "default_selection": {
+    "model": null,
+    "effort": null,
+    "service_tier": null,
+    "execution_profile": "inherit-native"
+  },
+  "control_schema": [
+    {
+      "control_id": "thinking",
+      "label": "Thinking",
+      "group": "turn",
+      "kind": "select",
+      "description": "Use Claude Code's installed adaptive-thinking control or disable extended thinking for this turn.",
+      "authority": "claude-agent-sdk-options",
+      "default": "adaptive",
+      "options": [
+        {
+          "value": "adaptive",
+          "label": "On (adaptive)",
+          "availability": { "available": true, "reason": null }
+        },
+        {
+          "value": "disabled",
+          "label": "Off",
+          "availability": { "available": true, "reason": null }
+        }
+      ],
+      "min_value": null,
+      "max_value": null
+    },
+    {
+      "control_id": "permission-mode",
+      "label": "Mode",
+      "group": "execution",
+      "kind": "select",
+      "description": "Claude Code's native permission mode. Some modes auto-permit or auto-deny actions before can_use_tool; those actions still receive post-tool audit evidence when the runtime exposes it.",
+      "authority": "claude-code-cli-help",
+      "default": null,
+      "options": [
+        {
+          "value": "default",
+          "label": "Manual",
+          "availability": { "available": true, "reason": null }
+        },
+        {
+          "value": "acceptEdits",
+          "label": "Edit automatically",
+          "availability": { "available": true, "reason": null }
+        },
+        {
+          "value": "plan",
+          "label": "Plan",
+          "availability": { "available": true, "reason": null }
+        },
+        {
+          "value": "auto",
+          "label": "Auto",
+          "availability": { "available": true, "reason": null }
+        },
+        {
+          "value": "dontAsk",
+          "label": "Don't ask",
+          "availability": { "available": true, "reason": null }
+        },
+        {
+          "value": "bypassPermissions",
+          "label": "Bypass permissions",
+          "availability": {
+            "available": false,
+            "reason": "Unavailable without a separate ruling from Live because it bypasses native permission checks."
+          }
+        }
+      ],
+      "min_value": null,
+      "max_value": null
+    },
+    {
+      "control_id": "setting-sources",
+      "label": "Settings sources",
+      "group": "execution",
+      "kind": "select",
+      "description": "Choose whether Claude Code inherits its native user, project, and local settings sources.",
+      "authority": "claude-agent-sdk-options",
+      "default": "native-default",
+      "options": [
+        {
+          "value": "native-default",
+          "label": "Native default",
+          "availability": { "available": true, "reason": null }
+        },
+        {
+          "value": "isolated",
+          "label": "Isolated",
+          "availability": {
+            "available": false,
+            "reason": "Requires a separate ruling from Live and disables native user, project, local settings and CLAUDE.md discovery."
+          }
+        }
+      ],
+      "min_value": null,
+      "max_value": null
+    }
+  ],
+  "supported_content_types": [
+    "markdown"
+  ],
+  "execution_profiles": [
+    {
+      "profile_id": "inherit-native",
+      "label": "Inherit native settings",
+      "description": "Use the installed runtime settings. Native Ask requests that reach can_use_tool use Dialektike's governed relay; inherited auto-permit rules may bypass the callback and their exact source is not observable.",
+      "availability": {
+        "available": true,
+        "reason": null
+      },
+      "values": {}
+    },
+    {
+      "profile_id": "manual",
+      "label": "Manual",
+      "description": "Ask through Claude Code's native default permission mode. Native rules that already match may still auto-permit and their exact source is not observable.",
+      "availability": { "available": true, "reason": null },
+      "values": {
+        "permission-mode": "default",
+        "setting-sources": "native-default"
+      }
+    },
+    {
+      "profile_id": "edit-automatically",
+      "label": "Edit automatically",
+      "description": "Claude Code may accept supported edit operations without presenting a permission card; observable completed tools remain audited.",
+      "availability": { "available": true, "reason": null },
+      "values": {
+        "permission-mode": "acceptEdits",
+        "setting-sources": "native-default"
+      }
+    },
+    {
+      "profile_id": "plan",
+      "label": "Plan",
+      "description": "Claude Code explores and presents a plan under its native plan permission mode.",
+      "availability": { "available": true, "reason": null },
+      "values": {
+        "permission-mode": "plan",
+        "setting-sources": "native-default"
+      }
+    },
+    {
+      "profile_id": "auto",
+      "label": "Auto",
+      "description": "Claude Code applies its installed auto-mode classifier; actions it classifies as safe may not reach the permission callback.",
+      "availability": { "available": true, "reason": null },
+      "values": {
+        "permission-mode": "auto",
+        "setting-sources": "native-default"
+      }
+    },
+    {
+      "profile_id": "dont-ask",
+      "label": "Don't ask",
+      "description": "Claude Code does not ask for permission; actions requiring approval are denied rather than promoted into a Dialektike card.",
+      "availability": { "available": true, "reason": null },
+      "values": {
+        "permission-mode": "dontAsk",
+        "setting-sources": "native-default"
+      }
+    }
+  ],
+  "runtime_facilities": [
+    {
+      "facility_id": "output-styles",
+      "label": "Output styles",
+      "description": "Managed by the installed Claude Code runtime and not claimed as effective by Dialektike.",
+      "observability": "not-observable",
+      "management": "runtime-native"
+    },
+    {
+      "facility_id": "agents",
+      "label": "Agents",
+      "description": "Managed by the installed Claude Code runtime and not claimed as effective by Dialektike.",
+      "observability": "not-observable",
+      "management": "runtime-native"
+    },
+    {
+      "facility_id": "hooks",
+      "label": "Hooks",
+      "description": "Managed by the installed Claude Code runtime and not claimed as effective by Dialektike.",
+      "observability": "not-observable",
+      "management": "runtime-native"
+    },
+    {
+      "facility_id": "memory",
+      "label": "Memory",
+      "description": "Managed by the installed Claude Code runtime and not claimed as effective by Dialektike.",
+      "observability": "not-observable",
+      "management": "runtime-native"
+    },
+    {
+      "facility_id": "permissions",
+      "label": "Permissions",
+      "description": "Native Ask requests that reach can_use_tool use Dialektike's governed relay. Inherited allow rules, PreToolUse allows, and sandbox auto-allow may bypass that callback; observable completions remain audit-only and the effective external rule source is not observable.",
+      "observability": "not-observable",
+      "management": "runtime-native"
+    },
+    {
+      "facility_id": "mcp-servers",
+      "label": "MCP servers",
+      "description": "Managed by the installed Claude Code runtime and not claimed as effective by Dialektike.",
+      "observability": "not-observable",
+      "management": "runtime-native"
+    },
+    {
+      "facility_id": "plugins",
+      "label": "Plugins",
+      "description": "Managed by the installed Claude Code runtime and not claimed as effective by Dialektike.",
+      "observability": "not-observable",
+      "management": "runtime-native"
+    }
+  ],
+  "permission_presentations": [
+    {
+      "request_kind": "can_use_tool",
+      "title": "Claude Code permission",
+      "layout": "tool",
+      "fields": [
+        {
+          "field_id": "tool",
+          "label": "Tool",
+          "pointer": "/tool",
+          "format": "text"
+        },
+        {
+          "field_id": "input",
+          "label": "Input",
+          "pointer": "/input",
+          "format": "json"
+        }
+      ]
+    }
+  ],
+  "connect": {
+    "label": "Connect Claude Code",
+    "help_text": "Install and authenticate the approved Claude Code runtime, then refresh capabilities.",
+    "action": "refresh-capabilities"
+  }
+}
